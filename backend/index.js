@@ -1,12 +1,18 @@
 require('dotenv').config();
 const express = require("express");
 const mongoose = require("mongoose");
-// const {HoldingsModel} = require("./model/HoldingsModel");
+const bodyParser = require("body-parser");
+const cors = require("cors");
+const {HoldingsModel} = require("./model/HoldingsModel");
 const {PositionsModel} = require("./model/PositionsModel");
 const port = process.env.port || 3002;
 const URL = process.env.MONGO_URL;
-
+const {OrdersModel} = require("./model/OrdersModel");
 const app = express();
+//using body parser nd cors//
+app.use(cors());
+app.use(bodyParser.json());
+
 
 // app.get('/addHoldings', async(req, res)=>{
 //     let tempHoldings =[
@@ -138,47 +144,69 @@ const app = express();
 // });
 
 
-app.get('/addPositions', async(req, res)=>{
-    let tempPosition=[
-  {
-    product: "CNC",
-    name: "EVEREADY",
-    qty: 2,
-    avg: 316.27,
-    price: 312.35,
-    net: "+0.58%",
-    day: "-1.24%",
-    isLoss: true,
-  },
-  {
-    product: "CNC",
-    name: "JUBLFOOD",
-    qty: 1,
-    avg: 3124.75,
-    price: 3082.65,
-    net: "+10.04%",
-    day: "-1.35%",
-    isLoss: true,
-  },   
- ];
+// app.get('/addPositions', async(req, res)=>{
+//     let tempPosition=[
+//   {
+//     product: "CNC",
+//     name: "EVEREADY",
+//     qty: 2,
+//     avg: 316.27,
+//     price: 312.35,
+//     net: "+0.58%",
+//     day: "-1.24%",
+//     isLoss: true,
+//   },
+//   {
+//     product: "CNC",
+//     name: "JUBLFOOD",
+//     qty: 1,
+//     avg: 3124.75,
+//     price: 3082.65,
+//     net: "+10.04%",
+//     day: "-1.35%",
+//     isLoss: true,
+//   },   
+//  ];
   
- tempPosition.forEach((position)=>{
-    let newPosition = new PositionsModel({
-    product:position.product,
-    name: position.name,
-    qty: position.qty,
-    avg: position.avg,
-    price:position.price,
-    net: parseFloat(position.net.replace('%', '')),
-    day: position.day,
-    isLoss: position.isLoss,
+//  tempPosition.forEach((position)=>{
+//     let newPosition = new PositionsModel({
+//     product:position.product,
+//     name: position.name,
+//     qty: position.qty,
+//     avg: position.avg,
+//     price:position.price,
+//     net: parseFloat(position.net.replace('%', '')),
+//     day: position.day,
+//     isLoss: position.isLoss,
+//   });
+//   newPosition.save();
+// });
+// res.send("Donee");
+// });
+
+//to fetch data from DB //
+
+app.get('/allHoldings', async(req,res)=>{
+  let allHoldings = await HoldingsModel.find({});
+  res.json(allHoldings);
+});
+
+app.get('/allPositions', async(req, res)=>{
+  let allPositions = await PositionsModel.find({});
+  res.json(allPositions);
+});
+
+// post route for inserting data //
+app.post('/newOrder',async(req,res)=>{
+  let newOrder = new OrdersModel({
+    name: req.body.name,
+    qty: req.body.qty,
+    price: req.body.price,
+    model:req.body.model,
   });
-  newPosition.save();
-});
-res.send("Donee");
-});
-
-
+  newOrder.save();
+  res.send("Order Saved");
+})
 app.listen(port , ()=>{
     console.log(`Server is running on port ${port}`);
 mongoose.connect(URL);

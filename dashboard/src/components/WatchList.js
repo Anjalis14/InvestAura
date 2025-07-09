@@ -1,10 +1,10 @@
 import React, { useState, useContext } from "react";
 
-// import axios from "axios";
+import axios from "axios";
 
-// import GeneralContext from "./GeneralContext";
+import GeneralContext from "./GeneralContext";
 
-import { Tooltip, Grow } from "@mui/material";  //tooltip get when on hover //
+import { Tooltip, Grow } from "@mui/material";
 
 import {
   BarChartOutlined,
@@ -14,7 +14,7 @@ import {
 } from "@mui/icons-material";
 
 import { watchlist } from "../data/data";
-// import { DoughnutChart } from "./DoughnoutChart";
+import { DoughnutChart } from "./DoughnoutChart";
 
 const labels = watchlist.map((subArray) => subArray["name"]);
 
@@ -92,6 +92,7 @@ const WatchList = () => {
         })}
       </ul>
 
+      <DoughnutChart data={data} />
     </div>
   );
 };
@@ -129,11 +130,11 @@ const WatchListItem = ({ stock }) => {
 };
 
 const WatchListActions = ({ uid }) => {
-  // const generalContext = useContext(GeneralContext);
+  const generalContext = useContext(GeneralContext);
 
-  // const handleBuyClick = () => {
-  //   generalContext.openBuyWindow(uid);
-  // };
+  const handleBuyClick = () => {
+    generalContext.openBuyWindow(uid);
+  };
 
   return (
     <span className="actions">
@@ -143,7 +144,7 @@ const WatchListActions = ({ uid }) => {
           placement="top"
           arrow
           TransitionComponent={Grow}
-          // onClick={handleBuyClick}
+          onClick={handleBuyClick}
         >
           <button className="buy">Buy</button>
         </Tooltip>
