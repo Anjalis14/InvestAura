@@ -5,7 +5,7 @@ const bodyParser = require("body-parser");
 const cors = require("cors");
 const {HoldingsModel} = require("./model/HoldingsModel");
 const {PositionsModel} = require("./model/PositionsModel");
-const port = process.env.port || 3002;
+const PORT = process.env.PORT || 5000;
 const URL = process.env.MONGO_URL;
 const {OrdersModel} = require("./model/OrdersModel");
 const app = express();
@@ -207,8 +207,8 @@ app.post('/newOrder',async(req,res)=>{
   newOrder.save();
   res.send("Order Saved");
 })
-app.listen(port , ()=>{
-    console.log(`Server is running on port ${port}`);
+app.listen(PORT , ()=>{
+    console.log(`Server is running on port ${PORT}`);
 mongoose.connect(URL);
 console.log("DB Connected");
 });
