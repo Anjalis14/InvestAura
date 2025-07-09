@@ -31,7 +31,7 @@ function Navbar() {
             <ul class="navbar-nav mb-lg-0">
               <li class="nav-item">
                 <Link class="nav-link active fs-5 " aria-current="page" to="/signup">
-                  Signup
+                  Dashboard
                 </Link>
               </li>
               <li class="nav-item">
